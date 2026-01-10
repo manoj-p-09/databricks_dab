@@ -13,9 +13,30 @@ resources:
       tasks:
         - task_key : ext_ev_population
           spark_python_task:
-            python_file: ../controller_driver/ext_ev_population_driver.py
+            python_file: ../controller_driver/data_ingestion_from_csv_driver.py
+            parameters:
+              - "--catalog"
+              - "${var.catalog}"
+              - "--schema"
+              - "${var.schema}"
+              - "--src"
+              - "/Volumes/dbacademy_learning/sourcedataset/source_dataset/Electric_Vehicle_Population_Data.csv"
+              - "--tgt_tbl"
+              - "tbl_ev_population"
           environment_key: default
-
+        - task_key : ext_daily_aqi
+          spark_python_task:
+            python_file: ../controller_driver/data_ingestion_from_csv_driver.py
+            parameters:
+              - "--catalog"
+              - "${var.catalog}"
+              - "--schema"
+              - "${var.schema}"
+              - "--src"
+              - "/Volumes/dbacademy_learning/sourcedataset/source_dataset/aqi_report.csv"
+              - "--tgt_tbl"
+              - "tbl_daily_aqi"
+          environment_key: default        
       environments:
         - environment_key: default
           spec:

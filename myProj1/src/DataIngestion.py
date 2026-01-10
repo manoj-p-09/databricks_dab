@@ -1,6 +1,7 @@
 import re
 from databricks.sdk.runtime import spark
 
+
 class DataIngestion:
     def __init__(self,catalog,schema,table):
         if catalog is None or schema is None or table is None:
