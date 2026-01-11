@@ -2,18 +2,21 @@
 resources:
   jobs:
     ev_population_data:
-      name: ev_population_data
+      name: ev_population_data_${var.env}
 
       parameters:
         - name: catalog
           default: ${var.catalog}
         - name: schema
           default: ${var.schema}
-
+      git_source:
+        git_url: https://github.com/manoj-p-09/databricks_dab.git
+        git_provider: gitHub
+        git_branch: development1
       tasks:
         - task_key : ext_ev_population
           spark_python_task:
-            python_file: ../controller_driver/data_ingestion_from_csv_driver.py
+            python_file: ${var.path_prefix}/controller_driver/data_ingestion_from_csv_driver.py
             parameters:
               - "--catalog"
               - "${var.catalog}"
@@ -23,10 +26,12 @@ resources:
               - "/Volumes/dbacademy_learning/sourcedataset/source_dataset/Electric_Vehicle_Population_Data.csv"
               - "--tgt_tbl"
               - "tbl_ev_population"
+            source : ${var.source_of_code}
+
           environment_key: default
         - task_key : ext_daily_aqi
           spark_python_task:
-            python_file: ../controller_driver/data_ingestion_from_csv_driver.py
+            python_file: ${var.path_prefix}/controller_driver/data_ingestion_from_csv_driver.py
             parameters:
               - "--catalog"
               - "${var.catalog}"
@@ -36,7 +41,23 @@ resources:
               - "/Volumes/dbacademy_learning/sourcedataset/source_dataset/aqi_report.csv"
               - "--tgt_tbl"
               - "tbl_daily_aqi"
+            source: ${var.source_of_code}
           environment_key: default        
+        - task_key : load_ev_state_details
+          depends_on:
+            - task_key : ext_ev_population
+          spark_python_task:
+            python_file: ${var.path_prefix}/src/ev_state_details.py
+            parameters:
+              - "--catalog"
+              - "${var.catalog}"
+              - "--schema"
+              - "${var.schema}"
+              - "--tgt_tbl"
+              - "ev_state_detail"
+            source: ${var.source_of_code}
+          environment_key: default        
+
       environments:
         - environment_key: default
           spec:

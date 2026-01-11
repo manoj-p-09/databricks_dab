@@ -1,27 +1,8 @@
-import argparse
 import sys
-from databricks.sdk.runtime import spark
 
-sys.path.append("../src")
-from DataIngestion import DataIngestion
-sys.path.append("../transformations")
-from transformation import Transformations
+sys.path.append('../src')
+from initial_config import *
 
-parser = argparse.ArgumentParser(description="Databricks job with catalog and schema parameters")
-parser.add_argument("--catalog", required=True)
-parser.add_argument("--schema", required=True)
-parser.add_argument("--src", required=False)
-parser.add_argument("--tgt_tbl", required=True)
-args = parser.parse_args()
-
-
-#variables & Parameters:
-catalog = args.catalog
-schema = args.schema
-src = args.src 
-tgt_tbl = args.tgt_tbl
-# src = '/Volumes/dbacademy_learning/sourcedataset/source_dataset/Electric_Vehicle_Population_Data.csv'
-# tgt_tbl = "tbl_ev_population"
 
 #Data Ingestion for the table "tbl_ev_population" CSV as a source.
 print("Initilizing Data Ingestion...")

@@ -12,6 +12,12 @@ variables:
     description: The catalog to use
   schema:
     description: The schema to use
+  env:
+    description: The Environment of the Job
+  source_of_code:
+    description: The Source of the notebook path GIT/WORKSPACE
+  path_prefix:
+    description: The Path prefix from where the source code can be accessible.
 
 targets:
   # The 'dev' target, for development purposes. This target is the default.
@@ -24,4 +30,39 @@ targets:
       catalog: dbacademy_learning
       #schema: ${workspace.current_user.short_name}
       schema: targets
+      env: dev
+      source_of_code: WORKSPACE
+      path_prefix: /Workspace/Users/manojpandian0954@gmail.com/dab_assets/databricks_dab/myProj1
+
+    # The 'test' target, for development purposes. This target is the default.
+  test:
+    mode: development
+    default: false
+    workspace:
+      host: https://dbc-0fdaf317-63aa.cloud.databricks.com
+    variables:
+      catalog: dbacademy_learning
+      #schema: ${workspace.current_user.short_name}
+      schema: targets
+      env : test
+      source_of_code: GIT
+      path_prefix: myProj1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
